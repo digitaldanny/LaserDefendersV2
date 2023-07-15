@@ -78,7 +78,6 @@ public class Player : MonoBehaviour
         Vector2 playerSize = new Vector2(transform.localScale.x / 2f, transform.localScale.y / 2f);
         newPosition.x = Mathf.Clamp(transform.position.x + deltaPosition.x, minScreenBounds.x + playerSize.x, maxScreenBounds.x - playerSize.x);
         newPosition.y = Mathf.Clamp(transform.position.y + deltaPosition.y, minScreenBounds.y + playerSize.y, maxScreenBounds.y - playerSize.y);
-        Debug.Log(newPosition);
 
         transform.position = newPosition;
     }
