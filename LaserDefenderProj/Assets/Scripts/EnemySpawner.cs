@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private List<WaveConfigSO> waveConfigs;
     [SerializeField] private float timeBetweenWaves = DEFAULT_TIME_BETWEEN_WAVES;
+    [SerializeField] private bool enableWaveLooping = true; // When enabled, we can loop through the list of waves multiple times. 
 
     void Start()
     {
@@ -16,11 +17,14 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnWaves()
     {
-        foreach (WaveConfigSO waveConfig in waveConfigs)
+        do
         {
-            StartCoroutine(SpawnEnemies(waveConfig));
-            yield return new WaitForSeconds(timeBetweenWaves);
-        }
+            foreach (WaveConfigSO waveConfig in waveConfigs)
+            {
+                StartCoroutine(SpawnEnemies(waveConfig));
+                yield return new WaitForSeconds(timeBetweenWaves);
+            }
+        } while (enableWaveLooping);
     }
 
     IEnumerator SpawnEnemies(WaveConfigSO waveConfig)
