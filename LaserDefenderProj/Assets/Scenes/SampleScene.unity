@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1812973195867966923, guid: 4203653c7ffed284682836fe95213f18, type: 3}
-  delayBetweenShots: 0.5
+  fireRate: 0.1
   projectileSpeed: 20
   projectileLifetime: 3
 --- !u!1 &963194225

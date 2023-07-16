@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float fireRate = 0.25f;
+    [SerializeField] private float fireRateBase = 0.25f;
+    [SerializeField] private float fireRateVariance = 0f;
+    [SerializeField] private float fireRateMin = 0.2f;
     [SerializeField] private float projectileSpeed = 20f;
     [SerializeField] private float projectileLifetime = 3f;
+
+    [Header("AI")]
+    [SerializeField] private bool useAI = true;
 
     private bool enableShooting;
     private Coroutine firingCoroutine;
@@ -29,8 +35,8 @@ public class Shooter : MonoBehaviour
      */
     void Start()
     {
-        enableShooting = false;
         firingCoroutine = null;
+        enableShooting = useAI; // AI should always be shooting. Need to set up Unity configs to disable auto-firing on player.
     }
 
     void Update()
@@ -73,7 +79,11 @@ public class Shooter : MonoBehaviour
 
             // After some time, destroy the projectile game object
             Destroy(projectile, projectileLifetime);
-            yield return new WaitForSeconds(fireRate);
+
+            // Wait some time before shooting another projectile
+            float timeToNextProjectile = Random.Range(fireRateBase - fireRateVariance, fireRateBase + fireRateVariance);
+            timeToNextProjectile = Mathf.Clamp(timeToNextProjectile, fireRateMin, float.MaxValue);
+            yield return new WaitForSeconds(timeToNextProjectile);
         }
     }
 }
