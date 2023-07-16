@@ -31,12 +31,18 @@ public class Player : MonoBehaviour
     private Vector2 rawUserInputMove;   // Raw user input for "movement" (WASD)
     private Vector2 minScreenBounds;    // Minimum boundaries of the World Point
     private Vector2 maxScreenBounds;    // Maximum boundaries of the World Point
+    private Shooter shooter;            // Object to instantiate projectiles
 
     /*
      * +-----+-----+-----+-----+-----+
-     * METHODS
+     * PRIVATE METHODS
      * +-----+-----+-----+-----+-----+
      */
+    private void Awake()
+    {
+        shooter = GetComponent<Shooter>(); 
+    }
+
     private void Start()
     {
         InitMovementBoundaries();
@@ -50,6 +56,16 @@ public class Player : MonoBehaviour
     void OnMove(InputValue value)
     {
         rawUserInputMove = value.Get<Vector2>();
+    }
+
+    void OnFire(InputValue value)
+    {
+        if (shooter == null)
+        {
+            return;
+        }
+
+        shooter.SetEnableShooting(value.isPressed);
     }
 
     /*

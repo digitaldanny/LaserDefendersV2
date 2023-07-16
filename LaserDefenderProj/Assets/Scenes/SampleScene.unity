@@ -125,7 +125,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2127012843903449364, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
   m_PrefabInstance: {fileID: 7997790788326068728}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &807638033
+--- !u!114 &807638040
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,10 +134,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 807638032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd8be0ea38e8fa4cb728d186cfb0ac0, type: 3}
+  m_Script: {fileID: 11500000, guid: 353d326cb3e6055449d460c52c9dc516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12
+  projectilePrefab: {fileID: 1812973195867966923, guid: 4203653c7ffed284682836fe95213f18, type: 3}
+  delayBetweenShots: 0.5
+  projectileSpeed: 20
+  projectileLifetime: 3
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +263,7 @@ Transform:
   m_Children:
   - {fileID: 1301471492}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1301471491
 GameObject:
@@ -376,7 +379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6859406575012475299, guid: beb0b42789299ec41af64668f5922961, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6859406575012475299, guid: beb0b42789299ec41af64668f5922961, type: 3}
       propertyPath: m_LocalPosition.x
@@ -435,16 +438,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2127012843903449364, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2668492609759405410, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
       propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2668492609759405410, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
-      propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2668492609759405410, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
@@ -493,5 +488,5 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2127012843903449364, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 807638033}
+      addedObject: {fileID: 807638040}
   m_SourcePrefab: {fileID: 100100000, guid: 145faf05041a3014b94f0aaa2221755b, type: 3}
