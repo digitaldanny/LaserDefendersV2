@@ -48,7 +48,6 @@ public class Shooter : MonoBehaviour
     {
         if ((enableShooting) && (firingCoroutine == null))
         {
-            Debug.Log("Starting coroutine");
             // Start coroutine to fire projectiles
             firingCoroutine = StartCoroutine(FireContinuously());
         }

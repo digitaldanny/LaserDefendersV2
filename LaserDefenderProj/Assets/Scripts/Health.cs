@@ -8,6 +8,14 @@ public class Health : MonoBehaviour
 
     [SerializeField] private int health = DEFAULT_HEALTH;
     [SerializeField] private ParticleSystem hitEffect;
+    [SerializeField] private bool applyCameraShakeOnDamage = false;
+
+    private CameraShake cameraShake;
+
+    private void Awake()
+    {
+        cameraShake = Camera.main.GetComponent<CameraShake>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,6 +28,7 @@ public class Health : MonoBehaviour
 
         // Take damage and tell damage dealer that it hit something.
         PlayHitEffect();
+        ShakeCamera();
         TakeDamage(damageDealer);
         damageDealer.Hit();
     }
@@ -33,7 +42,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    void PlayHitEffect()
+    private void PlayHitEffect()
     {
         if (hitEffect == null)
         {
@@ -42,5 +51,15 @@ public class Health : MonoBehaviour
 
         ParticleSystem explosionEffect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(explosionEffect, explosionEffect.main.duration + explosionEffect.main.startLifetime.constantMax);
+    }
+
+    private void ShakeCamera()
+    {
+        if ((cameraShake == null) || !applyCameraShakeOnDamage)
+        {
+            return;
+        }
+
+        cameraShake.Play();
     }
 }
