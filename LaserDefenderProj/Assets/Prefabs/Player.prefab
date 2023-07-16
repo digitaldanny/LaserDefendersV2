@@ -295,6 +295,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   hitEffect: {fileID: 3182609537622187140, guid: ec16951f31e48464988174dc3222b48e, type: 3}
+  audioOnDamageTaken: {fileID: 8300000, guid: 8581bbf3773cea349befa3a274d706a4, type: 3}
+  audioOnDeath: {fileID: 8300000, guid: 829847a13c2591e4cb262ae0ae8a6544, type: 3}
+  audioSource: 0
   applyCameraShakeOnDamage: 1
 --- !u!114 &7115768756438292654
 MonoBehaviour:
@@ -322,9 +325,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1812973195867966923, guid: 4203653c7ffed284682836fe95213f18, type: 3}
-  fireRateBase: 0.5
+  fireRateBase: 0.1
   fireRateVariance: 0
   fireRateMin: 0.2
-  projectileSpeed: 30
+  projectileSpeed: 40
   projectileLifetime: 3
+  shootingSound: {fileID: 8300000, guid: 4cab68daba609814895bb2a72fa5e76f, type: 3}
+  audioSource: 0
   useAI: 0

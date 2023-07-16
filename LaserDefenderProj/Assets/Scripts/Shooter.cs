@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    [Header("General")]
+    [Header("Projectile")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float fireRateBase = 0.25f;
     [SerializeField] private float fireRateVariance = 0f;
     [SerializeField] private float fireRateMin = 0.2f;
     [SerializeField] private float projectileSpeed = 20f;
     [SerializeField] private float projectileLifetime = 3f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip shootingSound;
+    [SerializeField] private AudioSource_e audioSource;
+    private AudioPlayer audioPlayer;
 
     [Header("AI")]
     [SerializeField] private bool useAI = true;
@@ -33,6 +38,11 @@ public class Shooter : MonoBehaviour
      * PRIVATE METHODS
      * +-----+-----+-----+-----+-----+
      */
+    private void Awake()
+    {
+        audioPlayer = FindFirstObjectByType<AudioPlayer>();
+    }
+
     void Start()
     {
         firingCoroutine = null;
@@ -69,12 +79,14 @@ public class Shooter : MonoBehaviour
                 Quaternion.identity    /* Specify no rotation */
             );
             
-            // Projectile shoots up
+            // Projectile shoots and plays the audio
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.velocity = transform.up * projectileSpeed;
             }
+
+            audioPlayer.PlaySound(shootingSound, audioSource);
 
             // After some time, destroy the projectile game object
             Destroy(projectile, projectileLifetime);

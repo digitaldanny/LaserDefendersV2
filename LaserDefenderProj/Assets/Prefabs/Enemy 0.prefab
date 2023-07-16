@@ -36,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2011669823624804380}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2734197212153112289
 MonoBehaviour:
@@ -140,6 +140,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2
   hitEffect: {fileID: 3182609537622187140, guid: ec16951f31e48464988174dc3222b48e, type: 3}
+  audioOnDamageTaken: {fileID: 8300000, guid: fae7424c0f68b444cbd6bc3c434e0d1d, type: 3}
+  audioOnDeath: {fileID: 8300000, guid: 3d61b6fa813708f4297b4dfa8de498db, type: 3}
+  audioSource: 0
+  applyCameraShakeOnDamage: 0
 --- !u!114 &7816219733451370459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,6 +162,8 @@ MonoBehaviour:
   fireRateMin: 0.2
   projectileSpeed: 20
   projectileLifetime: 3
+  shootingSound: {fileID: 8300000, guid: d3210e0be1330ef43bbeb2df682a214f, type: 3}
+  audioSource: 1
   useAI: 1
 --- !u!1 &7817098108419237789
 GameObject:

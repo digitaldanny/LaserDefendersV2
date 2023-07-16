@@ -6,14 +6,25 @@ public class Health : MonoBehaviour
 {
     private const int DEFAULT_HEALTH = 5;
 
+    [Header("Health")]
     [SerializeField] private int health = DEFAULT_HEALTH;
-    [SerializeField] private ParticleSystem hitEffect;
-    [SerializeField] private bool applyCameraShakeOnDamage = false;
 
+    [Header("Visual")]
+    [SerializeField] private ParticleSystem hitEffect;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip audioOnDamageTaken;
+    [SerializeField] private AudioClip audioOnDeath;
+    [SerializeField] private AudioSource_e audioSource;
+    private AudioPlayer audioPlayer;
+
+    [Header("Camera Shake")]
+    [SerializeField] private bool applyCameraShakeOnDamage = false;
     private CameraShake cameraShake;
 
     private void Awake()
     {
+        audioPlayer = FindFirstObjectByType<AudioPlayer>();
         cameraShake = Camera.main.GetComponent<CameraShake>();
     }
 
@@ -27,7 +38,7 @@ public class Health : MonoBehaviour
         }
 
         // Take damage and tell damage dealer that it hit something.
-        PlayHitEffect();
+        PlayExplosionAnimation();
         ShakeCamera();
         TakeDamage(damageDealer);
         damageDealer.Hit();
@@ -36,13 +47,21 @@ public class Health : MonoBehaviour
     private void TakeDamage(DamageDealer damageDealer)
     {
         health -= damageDealer.GetDamage();
+
         if (health <= 0)
         {
+            // If character has died, destroy the game object and play death sound.
+            audioPlayer.PlaySound(audioOnDeath, audioSource);
             Destroy(gameObject);
+        }
+        else
+        {
+            // Play damage taken sound.
+            audioPlayer.PlaySound(audioOnDamageTaken, audioSource);
         }
     }
 
-    private void PlayHitEffect()
+    private void PlayExplosionAnimation()
     {
         if (hitEffect == null)
         {
