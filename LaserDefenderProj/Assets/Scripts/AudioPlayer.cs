@@ -4,7 +4,8 @@ using UnityEngine;
 public enum AudioSource_e
 {
     AUDIO_SOURCE_PLAYER,
-    AUDIO_SOURCE_ENEMY
+    AUDIO_SOURCE_ENEMY,
+    AUDIO_SOURCE_BACKGROUND_MUSIC
 }
 
 public class AudioPlayer : MonoBehaviour
@@ -18,6 +19,13 @@ public class AudioPlayer : MonoBehaviour
     [Header("Enemy Sound Configs")]
     [SerializeField][Range(AUDIO_VOLUME_MIN, AUDIO_VOLUME_MAX)] private float enemyVolume;
 
+    [Header("Background Music Configs")]
+    [SerializeField] private AudioClip actionMusic;
+    [SerializeField][Range(AUDIO_VOLUME_MIN, AUDIO_VOLUME_MAX)] private float backgroundMusicVolume;
+
+    private AudioSource audioSourceBackground;
+
+
     public void PlaySound(AudioClip audioClip, AudioSource_e audioSource)
     {
         float volume = AUDIO_VOLUME_MIN;
@@ -30,11 +38,26 @@ public class AudioPlayer : MonoBehaviour
             case AudioSource_e.AUDIO_SOURCE_ENEMY:
                 volume = enemyVolume;
                 break;
+            case AudioSource_e.AUDIO_SOURCE_BACKGROUND_MUSIC:
+                volume = backgroundMusicVolume;
+                break;
             default:
                 Debug.Log("No audio source provided.");
                 break;
         }
 
         AudioSource.PlayClipAtPoint(audioClip, position, volume);
+    }
+
+    private void Start()
+    {
+        // init
+        audioSourceBackground = GetComponent<AudioSource>();
+
+        // TODO: For now, I will just have the action music playing constantly.
+        // Once I have a starting screen, I will fade between the calm->action music once the gameplay loop begins.
+        audioSourceBackground.clip = actionMusic;
+        audioSourceBackground.volume = backgroundMusicVolume;
+        audioSourceBackground.Play();
     }
 }
