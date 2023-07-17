@@ -22,10 +22,32 @@ public class Health : MonoBehaviour
     [SerializeField] private bool applyCameraShakeOnDamage = false;
     private CameraShake cameraShake;
 
+    [Header("Enemy Points")]
+    [SerializeField] private bool isEnemy = false;
+    [SerializeField] private int pointsOnKill = 0;
+    private ScoreKeeper scoreKeeper;
+
+    /*
+     * +-----+-----+-----+-----+-----+
+     * PUBLIC METHODS
+     * +-----+-----+-----+-----+-----+
+     */
+
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    /*
+     * +-----+-----+-----+-----+-----+
+     * PRIVATE METHODS
+     * +-----+-----+-----+-----+-----+
+     */
     private void Awake()
     {
         audioPlayer = FindFirstObjectByType<AudioPlayer>();
         cameraShake = Camera.main.GetComponent<CameraShake>();
+        scoreKeeper = FindFirstObjectByType<ScoreKeeper>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -52,6 +74,12 @@ public class Health : MonoBehaviour
         {
             // If character has died, destroy the game object and play death sound.
             audioPlayer.PlaySound(audioOnDeath, audioSource);
+
+            // TODO Issue#2 - Refactor this code so that the AI scoring system is separate from the Health system.
+            if (isEnemy)
+            {
+                scoreKeeper.IncreaseScore(pointsOnKill);
+            }
             Destroy(gameObject);
         }
         else
