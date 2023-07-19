@@ -15,7 +15,6 @@ public class ScoreKeeper : MonoBehaviour
     {
         score += points;
         Mathf.Clamp(score, 0, int.MaxValue);
-        Debug.LogFormat("Score {0}", score);
     }
 
     public int GetScore()
