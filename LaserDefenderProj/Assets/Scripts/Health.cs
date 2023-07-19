@@ -27,6 +27,9 @@ public class Health : MonoBehaviour
     [SerializeField] private int pointsOnKill = 0;
     private ScoreKeeper scoreKeeper;
 
+    // Level Management
+    LevelManager levelManager;
+
     /*
      * +-----+-----+-----+-----+-----+
      * PUBLIC METHODS
@@ -48,6 +51,7 @@ public class Health : MonoBehaviour
         audioPlayer = FindFirstObjectByType<AudioPlayer>();
         cameraShake = Camera.main.GetComponent<CameraShake>();
         scoreKeeper = FindFirstObjectByType<ScoreKeeper>();
+        levelManager = FindFirstObjectByType<LevelManager>(); 
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -79,6 +83,10 @@ public class Health : MonoBehaviour
             if (isEnemy)
             {
                 scoreKeeper.IncreaseScore(pointsOnKill);
+            }
+            else
+            {
+                levelManager.LoadGameOver();
             }
             Destroy(gameObject);
         }
