@@ -18,19 +18,18 @@ public class Player : MonoBehaviour
 
     /*
      * +-----+-----+-----+-----+-----+
-     * SERIALIZED FIELDS
-     * +-----+-----+-----+-----+-----+
-     */
-    [SerializeField] private float moveSpeed = DEFAULT_MOVEMENT_SPEED_FLOAT; // Player movement speed multiplier
-
-    /*
-     * +-----+-----+-----+-----+-----+
      * PRIVATE
      * +-----+-----+-----+-----+-----+
      */
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = DEFAULT_MOVEMENT_SPEED_FLOAT; // Player movement speed multiplier
     private Vector2 rawUserInputMove;   // Raw user input for "movement" (WASD)
     private Vector2 minScreenBounds;    // Minimum boundaries of the World Point
     private Vector2 maxScreenBounds;    // Maximum boundaries of the World Point
+    [SerializeField] private int bottomBoundaryPadding;  // Padding to stop player from traveling through the UI
+
+    // Script references
     private Shooter shooter;            // Object to instantiate projectiles
 
     /*
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
         // Solution is to pad the screen boundaries by half of the player's scale.
         Vector2 playerSize = new Vector2(transform.localScale.x / 2f, transform.localScale.y / 2f);
         newPosition.x = Mathf.Clamp(transform.position.x + deltaPosition.x, minScreenBounds.x + playerSize.x, maxScreenBounds.x - playerSize.x);
-        newPosition.y = Mathf.Clamp(transform.position.y + deltaPosition.y, minScreenBounds.y + playerSize.y, maxScreenBounds.y - playerSize.y);
+        newPosition.y = Mathf.Clamp(transform.position.y + deltaPosition.y, minScreenBounds.y + playerSize.y + bottomBoundaryPadding, maxScreenBounds.y - playerSize.y);
 
         transform.position = newPosition;
     }

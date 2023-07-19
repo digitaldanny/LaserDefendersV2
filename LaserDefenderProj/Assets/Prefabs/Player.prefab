@@ -299,6 +299,8 @@ MonoBehaviour:
   audioOnDeath: {fileID: 8300000, guid: 829847a13c2591e4cb262ae0ae8a6544, type: 3}
   audioSource: 0
   applyCameraShakeOnDamage: 1
+  isEnemy: 0
+  pointsOnKill: 0
 --- !u!114 &7115768756438292654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
+  bottomBoundaryPadding: 2
 --- !u!114 &5317247724943191509
 MonoBehaviour:
   m_ObjectHideFlags: 0
