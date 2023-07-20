@@ -30,9 +30,20 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene((int)SceneIndex_e.SCENE_INDEX_GAME_OVER);
     }
 
+    public void LoadGameOverWithDelay(float delay)
+    {
+        StartCoroutine(WaitAndLoad(SceneIndex_e.SCENE_INDEX_GAME_OVER, delay));
+    }
+
     public void QuitGame()
     {
         Debug.Log("Quit game (will not actually work in debug mode)");
         Application.Quit(); // NOTE - Only works for standalone exe, but it will not work on embedded applications.
+    }
+
+    IEnumerator WaitAndLoad(SceneIndex_e sceneIndex, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene((int)sceneIndex);
     }
 }

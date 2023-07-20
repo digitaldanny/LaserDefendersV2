@@ -27,8 +27,9 @@ public class Health : MonoBehaviour
     [SerializeField] private int pointsOnKill = 0;
     private ScoreKeeper scoreKeeper;
 
-    // Level Management
+    [Header("Level Management")]
     LevelManager levelManager;
+    [SerializeField] private float loadGameOverSceneDelay;
 
     /*
      * +-----+-----+-----+-----+-----+
@@ -86,7 +87,7 @@ public class Health : MonoBehaviour
             }
             else
             {
-                levelManager.LoadGameOver();
+                levelManager.LoadGameOverWithDelay(loadGameOverSceneDelay);
             }
             Destroy(gameObject);
         }

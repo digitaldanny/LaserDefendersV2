@@ -301,6 +301,7 @@ MonoBehaviour:
   applyCameraShakeOnDamage: 1
   isEnemy: 0
   pointsOnKill: 0
+  loadGameOverSceneDelay: 2
 --- !u!114 &7115768756438292654
 MonoBehaviour:
   m_ObjectHideFlags: 0
