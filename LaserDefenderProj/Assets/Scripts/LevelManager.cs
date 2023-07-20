@@ -15,8 +15,16 @@ enum SceneIndex_e
 
 public class LevelManager : MonoBehaviour
 {
+    private ScoreKeeper scoreKeeper;
+
+    private void Awake()
+    {
+        scoreKeeper = FindFirstObjectByType<ScoreKeeper>();
+    }
+
     public void LoadGame()
     {
+        scoreKeeper.ResetScore();
         SceneManager.LoadScene((int)SceneIndex_e.SCENE_INDEX_GAME);
     }
 

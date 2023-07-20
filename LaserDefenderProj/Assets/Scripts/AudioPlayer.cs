@@ -24,7 +24,7 @@ public class AudioPlayer : MonoBehaviour
     [SerializeField][Range(AUDIO_VOLUME_MIN, AUDIO_VOLUME_MAX)] private float backgroundMusicVolume;
 
     private AudioSource audioSourceBackground;
-    static private AudioPlayer audioPlayerInstance; // This will store reference to current object for singleton implementation
+    static private AudioPlayer audioPlayerSingletonInstance; // This will store reference to current object for singleton implementation
 
 
     public void PlaySound(AudioClip audioClip, AudioSource_e audioSource)
@@ -57,12 +57,12 @@ public class AudioPlayer : MonoBehaviour
 
     void ManageSingleton()
     {
-        if (audioPlayerInstance == null)
+        if (audioPlayerSingletonInstance == null)
         {
             // first instance of this game object in the main menu
             // Save this one so that it persists on future scenes
-            audioPlayerInstance = this;
-            DontDestroyOnLoad(audioPlayerInstance);
+            audioPlayerSingletonInstance = this;
+            DontDestroyOnLoad(audioPlayerSingletonInstance);
         }
         else
         {
