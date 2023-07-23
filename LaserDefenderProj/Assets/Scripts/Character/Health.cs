@@ -68,7 +68,6 @@ public class Health : MonoBehaviour
         PlayExplosionAnimation();
         ShakeCamera();
         TakeDamage(damageDealer);
-        damageDealer.Hit();
     }
 
     private void TakeDamage(DamageDealer damageDealer)
