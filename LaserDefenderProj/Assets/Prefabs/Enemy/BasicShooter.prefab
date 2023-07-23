@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 6321423167332499344}
   - component: {fileID: -954272537698810664}
   - component: {fileID: 7816219733451370459}
+  - component: {fileID: 4503956127509699546}
   m_Layer: 7
-  m_Name: Enemy 0
+  m_Name: BasicShooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +37,7 @@ Transform:
   m_Children:
   - {fileID: 2011669823624804380}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2734197212153112289
 MonoBehaviour:
@@ -138,14 +139,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df52ddb65304dec478a1fe7bcb078a20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
+  health: 3
   hitEffect: {fileID: 3182609537622187140, guid: ec16951f31e48464988174dc3222b48e, type: 3}
   audioOnDamageTaken: {fileID: 8300000, guid: fae7424c0f68b444cbd6bc3c434e0d1d, type: 3}
   audioOnDeath: {fileID: 8300000, guid: 3d61b6fa813708f4297b4dfa8de498db, type: 3}
-  audioSource: 0
+  audioSource: 1
   applyCameraShakeOnDamage: 0
   isEnemy: 1
   pointsOnKill: 50
+  loadGameOverSceneDelay: 0
 --- !u!114 &7816219733451370459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +168,18 @@ MonoBehaviour:
   projectileLifetime: 3
   shootingSound: {fileID: 8300000, guid: d3210e0be1330ef43bbeb2df682a214f, type: 3}
   audioSource: 1
-  useAI: 1
+--- !u!114 &4503956127509699546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419851287271874953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa495b7210d0264fabbed6f749d93ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7817098108419237789
 GameObject:
   m_ObjectHideFlags: 0

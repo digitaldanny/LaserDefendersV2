@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        shooter.SetEnableShooting(value.isPressed);
+        shooter.FireContinuously(value.isPressed);
     }
 
     /*
