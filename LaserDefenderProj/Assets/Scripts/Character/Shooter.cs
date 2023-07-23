@@ -17,10 +17,6 @@ public class Shooter : MonoBehaviour
     [SerializeField] private AudioSource_e audioSource;
     private AudioPlayer audioPlayer;
 
-    [Header("AI")]
-    [SerializeField] private bool useAI = true;
-
-    private bool enableShooting;
     private Coroutine firingCoroutine;
 
     /*
@@ -28,9 +24,56 @@ public class Shooter : MonoBehaviour
      * PUBLIC METHODS
      * +-----+-----+-----+-----+-----+
      */
-    public void SetEnableShooting(bool enable)
+
+    /*
+     * This function starts a coroutines that will continuously fire a single projectile 
+     * after the delays configured for the class.
+     * 
+     * NOTE: This function is mostly useful for the player character who will just hold 
+     *  down the Fire button and expect shooting to happen at the max speed.
+     *  
+     *  param  enableShooting       Start shooting when true, and stop shooting when false.
+     */
+    public void FireContinuously(bool enableShooting)
     {
-        enableShooting = enable;
+        if ((enableShooting) && (firingCoroutine == null))
+        {
+            // Start coroutine to fire projectiles
+            firingCoroutine = StartCoroutine(FireContinuouslyRoutine());
+        }
+        else if ((!enableShooting) && (firingCoroutine != null))
+        {
+            // Not currently firing, and we have already started a firing coroutine.
+            StopCoroutine(firingCoroutine);
+            firingCoroutine = null;
+        }
+    }
+
+    /*
+     * This function fires a single bullet immediately WITHOUT considering the time
+     * elapsed since the last shot.
+     *  
+     *  param  enableShooting       Start shooting when true, and stop shooting when false.
+     */
+    public void FireSingleShot()
+    {
+        GameObject projectile = Instantiate(
+            projectilePrefab,      /* Game Object to instantiate */
+            transform.position,    /* Starting position will be the parent */
+            Quaternion.identity    /* Specify no rotation */
+        );
+
+        // Projectile shoots and plays the audio
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = transform.up * projectileSpeed;
+        }
+
+        audioPlayer.PlaySound(shootingSound, audioSource);
+
+        // After some time, destroy the projectile game object
+        Destroy(projectile, projectileLifetime);
     }
 
     /*
@@ -46,50 +89,19 @@ public class Shooter : MonoBehaviour
     void Start()
     {
         firingCoroutine = null;
-        enableShooting = useAI; // AI should always be shooting. Need to set up Unity configs to disable auto-firing on player.
     }
 
-    void Update()
-    {
-        Fire();
-    }
-
-    void Fire()
-    {
-        if ((enableShooting) && (firingCoroutine == null))
-        {
-            // Start coroutine to fire projectiles
-            firingCoroutine = StartCoroutine(FireContinuously());
-        }
-        else if ((!enableShooting) && (firingCoroutine != null))
-        {
-            // Not currently firing, and we have already started a firing coroutine.
-            StopCoroutine(firingCoroutine);
-            firingCoroutine = null;
-        }
-    }
-
-    IEnumerator FireContinuously()
+    /*
+     * This coroutine will fire a single bullet after the delays configured for the class.
+     * 
+     * NOTE: This function is mostly useful for the player character who will just hold 
+     *  down the Fire button and expect shooting to happen at the max speed.
+     */
+    IEnumerator FireContinuouslyRoutine()
     {
         while (true)
         {
-            GameObject projectile = Instantiate(
-                projectilePrefab,      /* Game Object to instantiate */
-                transform.position,    /* Starting position will be the parent */
-                Quaternion.identity    /* Specify no rotation */
-            );
-            
-            // Projectile shoots and plays the audio
-            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = transform.up * projectileSpeed;
-            }
-
-            audioPlayer.PlaySound(shootingSound, audioSource);
-
-            // After some time, destroy the projectile game object
-            Destroy(projectile, projectileLifetime);
+            FireSingleShot();
 
             // Wait some time before shooting another projectile
             float timeToNextProjectile = Random.Range(fireRateBase - fireRateVariance, fireRateBase + fireRateVariance);
