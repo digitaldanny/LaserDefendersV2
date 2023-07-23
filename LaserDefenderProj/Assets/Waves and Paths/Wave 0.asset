@@ -17,6 +17,9 @@ MonoBehaviour:
   - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
   - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
   - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
+  - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
+  - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
+  - {fileID: 1419851287271874953, guid: 8e3d24c384de3eb4c8b93cb9c5aef72b, type: 3}
   moveSpeed: 12
-  spawnTimeDelay: 1
-  spawnTimeVariance: 0.25
+  spawnTimeDelay: 0.5
+  spawnTimeVariance: 0.1
