@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class WaveEnemySpawner : MonoBehaviour
 {
     private const float DEFAULT_TIME_BETWEEN_WAVES = 3f;
 

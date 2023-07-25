@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2118742132232181560}
   - component: {fileID: 6321423167332499344}
   - component: {fileID: -954272537698810664}
+  - component: {fileID: 7316391684729114257}
   m_Layer: 7
   m_Name: Sideswiper
   m_TagString: Untagged
@@ -137,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df52ddb65304dec478a1fe7bcb078a20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 3
+  health: 99999
   hitEffect: {fileID: 3182609537622187140, guid: ec16951f31e48464988174dc3222b48e, type: 3}
   audioOnDamageTaken: {fileID: 8300000, guid: fae7424c0f68b444cbd6bc3c434e0d1d, type: 3}
   audioOnDeath: {fileID: 8300000, guid: 3d61b6fa813708f4297b4dfa8de498db, type: 3}
@@ -146,6 +147,19 @@ MonoBehaviour:
   isEnemy: 1
   pointsOnKill: 50
   loadGameOverSceneDelay: 0
+--- !u!114 &7316391684729114257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419851287271874953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3902bd161324b6945ace974808bf488a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
 --- !u!1 &7817098108419237789
 GameObject:
   m_ObjectHideFlags: 0
