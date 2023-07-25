@@ -10,7 +10,6 @@ public class ScreenBoundaryObjectDeleter : MonoBehaviour
      */
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Something hit.." + collision.gameObject.name);
         Destroy(collision.gameObject);
     }
 }

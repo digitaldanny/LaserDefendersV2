@@ -33,6 +33,7 @@ public class SideswiperEnemySpawner : MonoBehaviour
 
     [Header("DEBUG - SPAWN VISUALIZER")]
     [SerializeField] private bool enableSpawnVisualizer = true;
+    [SerializeField] private GameObject debugPrefab;
     [SerializeField] private Color colorSpawnPathRange = Color.yellow;
     [SerializeField] private Color colorSpawnPathChosen = Color.green;
     [SerializeField] private Color colorSpawnBoundaries = Color.red;
@@ -58,6 +59,7 @@ public class SideswiperEnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug_EnableDebugPrefab(enableSpawnVisualizer);
         Debug_DrawPlaneBoundaryLines();
 
         // TODO - Enable multiple coroutines to start so that multiple sideswipers can spawn at a time..
@@ -88,9 +90,24 @@ public class SideswiperEnemySpawner : MonoBehaviour
             Vector2 spawnPoint = GenerateSpawnPointWithinBoundaries(spawnSide);
             Vector2 direction = GenerateRotationWithinBoundaries(spawnPoint, spawnSide);
 
-            // Spawn a sideswiper with the selected spawn point + rotation
-            prefab.transform.position = spawnPoint;
-            prefab.transform.up = direction;
+            // Spawn a sideswiper or debug prefab with the selected spawn point + rotation
+            if (enableSpawnVisualizer)
+            {
+                // Debug prefab
+                debugPrefab.transform.position = spawnPoint;
+                debugPrefab.transform.up = direction;
+            }
+            else
+            {
+                // Sideswiper
+                GameObject enemyGameObject = Instantiate(
+                    prefab,      /* Game Object to instantiate */
+                    spawnPoint,  /* Starting position */
+                    Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
+                    transform    /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                );
+                enemyGameObject.transform.up = direction;
+            }
 
             yield return new WaitForSeconds(timeBetweenSpawnBase);
         }
@@ -217,25 +234,33 @@ public class SideswiperEnemySpawner : MonoBehaviour
         Debug.DrawLine(
             new Vector2(minSpawnBoundaries.x, minScreenBoundaries.y),
             new Vector2(minSpawnBoundaries.x, maxScreenBoundaries.y),
-            colorSpawnBoundaries, timeBetweenSpawnBase);
+            colorSpawnBoundaries);
 
         // Max X boundary starting from (xmax, 0) -> (xmax, 1)
         Debug.DrawLine(
             new Vector2(maxSpawnBoundaries.x, minScreenBoundaries.y),
             new Vector2(maxSpawnBoundaries.x, maxScreenBoundaries.y),
-            colorSpawnBoundaries, timeBetweenSpawnBase);
+            colorSpawnBoundaries);
 
         // Min Y boundary starting from (0, ymin) -> (1, ymin)
         Debug.DrawLine(
             new Vector2(minScreenBoundaries.x, minSpawnBoundaries.y),
             new Vector2(maxScreenBoundaries.x, minSpawnBoundaries.y),
-            colorSpawnBoundaries, timeBetweenSpawnBase);
+            colorSpawnBoundaries);
 
         // Max Y boundary starting from (0, ymax) -> (1, ymax)
         Debug.DrawLine(
             new Vector2(minScreenBoundaries.x, maxSpawnBoundaries.y),
             new Vector2(maxScreenBoundaries.x, maxSpawnBoundaries.y),
-            colorSpawnBoundaries, timeBetweenSpawnBase);
+            colorSpawnBoundaries);
+    }
+
+    /*
+     * Enables or disables the debug game object to visualize where sideswiper would spawn in.
+     */
+    private void Debug_EnableDebugPrefab(bool enable)
+    {
+        debugPrefab.SetActive(enable);
     }
 
     /*
