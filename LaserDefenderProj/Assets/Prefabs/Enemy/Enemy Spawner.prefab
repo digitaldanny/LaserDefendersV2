@@ -98,7 +98,7 @@ GameObject:
   m_Layer: 0
   m_Name: Enemy Spawner
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 65f0e363b74cf5845ab8c3fbc14f39ac, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -148,12 +148,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9ae8b677e252940ab1cd1ea52402a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1419851287271874953, guid: 0e3b91c57e89afb43a86131700bb7fa1, type: 3}
+  sideswiperPrefab: {fileID: 1419851287271874953, guid: 0e3b91c57e89afb43a86131700bb7fa1, type: 3}
+  warningPrefab: {fileID: 7176697214491322159, guid: fb0fcd2f3fe6fae47b68888fc9597d13, type: 3}
+  timeToDisplayWarning: 2
   timeBetweenSpawnBase: 1
   timeBetweenSpawnVariance: 0
   timeBetweenSpawnMin: 0
   xPlaneViewportBoundaryPadding: 0.2
   yPlaneViewportBoundaryPadding: 0.2
+  spawnSideIgnoreList: 01000000
   enableSpawn: 1
   enableSpawnVisualizer: 0
   debugPrefab: {fileID: 6625079336270521369}

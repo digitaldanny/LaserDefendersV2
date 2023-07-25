@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class SideswiperEnemySpawner : MonoBehaviour
 {
+    #region Types
     enum SpawnSide_e
     {
         SPAWN_STATE_TOP,
@@ -11,10 +14,14 @@ public class SideswiperEnemySpawner : MonoBehaviour
         SPAWN_STATE_LEFT,
         SPAWN_STATE_RIGHT
     }
+    #endregion Types
 
-    [SerializeField] private GameObject prefab;
+    #region Data
+    [SerializeField] private GameObject sideswiperPrefab;
+    [SerializeField] private GameObject warningPrefab;
 
     [Header("Spawn Delays")]
+    [SerializeField] private float timeToDisplayWarning;
     [SerializeField] private float timeBetweenSpawnBase;
     [SerializeField] private float timeBetweenSpawnVariance;
     [SerializeField] private float timeBetweenSpawnMin;
@@ -23,9 +30,13 @@ public class SideswiperEnemySpawner : MonoBehaviour
     [Header("Spawn Positions")]
     [SerializeField][Range(0, 1)] private float xPlaneViewportBoundaryPadding = 0.2f;  // Sideswiper must stay within (screenLeft + padding, screenRight - padding)
     [SerializeField][Range(0, 1)] private float yPlaneViewportBoundaryPadding = 0.2f;  // Sideswiper must stay within (screenBottom + padding, screenTop - padding)
+    
     private Vector2 worldViewMin;
     private Vector2 worldViewMax;
     private SpawnSide_e spawnSide;
+
+    [SerializeField][Tooltip("Select any sides you do not want enemy to spawn from")] 
+    private List<SpawnSide_e> spawnSideIgnoreList;
 
     [Header("Other")]
     [SerializeField] private bool enableSpawn; // Sideswiper can only spawn with this set to true
@@ -37,13 +48,14 @@ public class SideswiperEnemySpawner : MonoBehaviour
     [SerializeField] private Color colorSpawnPathRange = Color.yellow;
     [SerializeField] private Color colorSpawnPathChosen = Color.green;
     [SerializeField] private Color colorSpawnBoundaries = Color.red;
+    #endregion Data
 
     /*
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      * MONOBEHAVIOR OVERRIDES
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      */
-
+    #region MonobehaviorOverrides
     private void Awake()
     {
         camera = Camera.main;
@@ -68,13 +80,14 @@ public class SideswiperEnemySpawner : MonoBehaviour
             spawnCoroutine = StartCoroutine(SpawnSideSwiperRoutine());
         }
     }
+    #endregion MonobehaviorOverrides
 
     /*
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      * PRIVATE METHODS
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      */
-
+    #region PrivateMethods
     /*
      * Coroutine to spawn in the sideswiper prefab after a delay. Following steps will happen..
      * - Generate a start point to instantiate the game object.
@@ -86,7 +99,7 @@ public class SideswiperEnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            SpawnSide_e spawnSide = Util.RandomEnumValue<SpawnSide_e>();
+            SpawnSide_e spawnSide = ChooseRandomSpawnSide(spawnSideIgnoreList);
             Vector2 spawnPoint = GenerateSpawnPointWithinBoundaries(spawnSide);
             Vector2 direction = GenerateRotationWithinBoundaries(spawnPoint, spawnSide);
 
@@ -99,12 +112,24 @@ public class SideswiperEnemySpawner : MonoBehaviour
             }
             else
             {
+                // Warning 
+                GameObject iconWarning = Instantiate(
+                    warningPrefab,   /* Game Object to instantiate */
+                    spawnPoint,         /* Starting position */
+                    Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
+                    transform           /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                );
+                iconWarning.transform.up = direction;
+
+                yield return new WaitForSeconds(timeToDisplayWarning);
+                Destroy(iconWarning);
+
                 // Sideswiper
                 GameObject enemyGameObject = Instantiate(
-                    prefab,      /* Game Object to instantiate */
-                    spawnPoint,  /* Starting position */
+                    sideswiperPrefab,   /* Game Object to instantiate */
+                    spawnPoint,         /* Starting position */
                     Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
-                    transform    /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                    transform           /* Transform of the parent object to instantiate this game object into (enemySpawner) */
                 );
                 enemyGameObject.transform.up = direction;
             }
@@ -114,10 +139,33 @@ public class SideswiperEnemySpawner : MonoBehaviour
     }
 
     /*
+     * Chooses a random side of the screen to spawn the sideswiper from.
+     * 
+     * param    spawnSideIgnoreList     List of SpawnSide_e enums that should be ignored.
+     * 
+     *  NOTE: Choosing all 4 spawn side options would cause an infinite loop.
+     *        Correct solution to disable spawning would be to set the enableSpawn variable to false.
+     */
+    private SpawnSide_e ChooseRandomSpawnSide(List<SpawnSide_e> spawnSideIgnoreList)
+    {
+        SpawnSide_e spawnSide;
+
+        do
+        {
+            // Generate a random spawn choice, making sure we ignore the side options we don't want.
+            spawnSide = Util.RandomEnumValue<SpawnSide_e>();
+        } while (spawnSideIgnoreList.Contains(spawnSide));
+
+        return spawnSide;
+    }
+
+    /*
      * Generate a random start point that the sideswiper will be spawned into, clamping the spawnpoint
      * to boundaries.
      * 
-     * param    spawnSide   Indicates whether the prefab will be positioned on the top, bottom, left, or right side of the screen.
+     * @param    spawnSide   Indicates whether the prefab will be positioned on the top, bottom, left, or right side of the screen.
+     * 
+     * @return  Position vector that the enemy could spawn in from.   
      */
     private Vector2 GenerateSpawnPointWithinBoundaries(SpawnSide_e spawnSide)
     {
@@ -162,8 +210,10 @@ public class SideswiperEnemySpawner : MonoBehaviour
      * Generate a random endpoint that the sideswiper will move towards and calculate the Quaternion
      * to orient the prefab so that it reaches that endpoint if traveling in a straight line.
      * 
-     * param    spawnPoint  Starting position that the prefab will be instantiated.
-     * param    spawnSide   Indicates whether the prefab will be positioned on the top, bottom, left, or right side of the screen.
+     * @param    spawnPoint  Starting position that the prefab will be instantiated.
+     * @param    spawnSide   Indicates whether the prefab will be positioned on the top, bottom, left, or right side of the screen.
+     * 
+     * @return  Direction vector to orient the character's local up vector towards.
      */
     private Vector2 GenerateRotationWithinBoundaries(Vector2 spawnPoint, SpawnSide_e spawnSide)
     {
@@ -307,4 +357,5 @@ public class SideswiperEnemySpawner : MonoBehaviour
     {
         return worldViewMax;
     }
+    #endregion PrivateMethods
 }

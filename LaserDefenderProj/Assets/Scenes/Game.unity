@@ -1327,8 +1327,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5067293545202838400, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2800000, guid: 65f0e363b74cf5845ab8c3fbc14f39ac, type: 3}
+    - target: {fileID: 5067293545202838400, guid: beb0b42789299ec41af64668f5922961, type: 3}
       propertyPath: m_Name
       value: Enemy Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: warningPrefab
+      value: 
+      objectReference: {fileID: 7176697214491322159, guid: fb0fcd2f3fe6fae47b68888fc9597d13, type: 3}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: sideswiperPrefab
+      value: 
+      objectReference: {fileID: 1419851287271874953, guid: 0e3b91c57e89afb43a86131700bb7fa1, type: 3}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: timeToDisplayWarning
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: spawnSideIgnoreList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: 'spawnSideIgnoreList.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: 'spawnSideIgnoreList.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: 'spawnSideIgnoreList.Array.data[2]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5648215732875473362, guid: beb0b42789299ec41af64668f5922961, type: 3}
+      propertyPath: 'spawnSideIgnoreList.Array.data[3]'
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6859406575012475299, guid: beb0b42789299ec41af64668f5922961, type: 3}
       propertyPath: m_RootOrder
