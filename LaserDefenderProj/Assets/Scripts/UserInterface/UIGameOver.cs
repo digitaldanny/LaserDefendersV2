@@ -6,7 +6,7 @@ using UnityEngine;
 public class UIGameOver : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
-    ScoreKeeper scoreKeeper;
+    private ScoreKeeper scoreKeeper;
 
     private void Awake()
     {
