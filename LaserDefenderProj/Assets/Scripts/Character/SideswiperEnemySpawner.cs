@@ -18,15 +18,18 @@ public class SideswiperEnemySpawner : MonoBehaviour
     #endregion Types
 
     #region Data
+
+    [Header("Spawn Instance")]
     [SerializeField] private GameObject sideswiperPrefab;
     [SerializeField] private GameObject warningPrefab;
+    [SerializeField] private int numInstancesAtOnce = 1; // Each time the sideswiper is spawned in, X number of sideswipers will be created.
 
     [Header("Spawn Delays")]
     [SerializeField] private float timeToDisplayWarning;
     [SerializeField] private float timeBetweenSpawnBase;
     [SerializeField] private float timeBetweenSpawnVariance;
     [SerializeField] private float timeBetweenSpawnMin;
-    Coroutine spawnCoroutine;
+    private float timeElapsedSinceSpawn = 0;
 
     [Header("Spawn Positions")]
     [SerializeField][Range(0, 1)] private float xPlaneViewportBoundaryPadding = 0.2f;  // Sideswiper must stay within (screenLeft + padding, screenRight - padding)
@@ -65,7 +68,6 @@ public class SideswiperEnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnCoroutine = null;
         SetWorldViewBoundaries();
     }
 
@@ -75,10 +77,14 @@ public class SideswiperEnemySpawner : MonoBehaviour
         Debug_EnableDebugPrefab(enableSpawnVisualizer);
         Debug_DrawPlaneBoundaryLines();
 
-        // TODO - Enable multiple coroutines to start so that multiple sideswipers can spawn at a time..
-        if (enableSpawn && (spawnCoroutine == null))
+        if (!ReadyToSpawn())
         {
-            spawnCoroutine = StartCoroutine(SpawnSideSwiperRoutine());
+            return;
+        }
+
+        for (int i = 0; i  < numInstancesAtOnce; i++)
+        {
+            StartCoroutine(SpawnSideSwiperRoutine());
         }
     }
     #endregion MonobehaviorOverrides
@@ -89,6 +95,34 @@ public class SideswiperEnemySpawner : MonoBehaviour
      * +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
      */
     #region PrivateMethods
+
+    /*
+     * Determines if the sideswiper is allowed to be spawned in based on
+     * time since the previous spawn.
+     * 
+     * @return  True, if spawning is allowed.
+     */
+    private bool ReadyToSpawn()
+    {
+        // Do not allow spawning if the toggle is disabled.
+        if (!enableSpawn)
+        {
+            return false;
+        }
+
+        // If spawning is enabled, begin counting time to next spawn.
+        if (timeElapsedSinceSpawn >= (timeBetweenSpawnBase + timeToDisplayWarning))
+        {
+            timeElapsedSinceSpawn = 0;
+            return true;
+        }
+        else
+        {
+            timeElapsedSinceSpawn += Time.deltaTime;
+            return false;
+        }
+    }
+
     /*
      * Coroutine to spawn in the sideswiper prefab after a delay. Following steps will happen..
      * - Generate a start point to instantiate the game object.
@@ -98,45 +132,42 @@ public class SideswiperEnemySpawner : MonoBehaviour
      */
     IEnumerator SpawnSideSwiperRoutine()
     {
-        while (true)
+        SpawnSide_e spawnSide = ChooseRandomSpawnSide(spawnSideIgnoreList);
+        Vector2 spawnPoint = GenerateSpawnPointWithinBoundaries(spawnSide);
+        Vector2 direction = GenerateRotationWithinBoundaries(spawnPoint, spawnSide);
+
+        // Spawn a sideswiper or debug prefab with the selected spawn point + rotation
+        if (enableSpawnVisualizer)
         {
-            SpawnSide_e spawnSide = ChooseRandomSpawnSide(spawnSideIgnoreList);
-            Vector2 spawnPoint = GenerateSpawnPointWithinBoundaries(spawnSide);
-            Vector2 direction = GenerateRotationWithinBoundaries(spawnPoint, spawnSide);
-
-            // Spawn a sideswiper or debug prefab with the selected spawn point + rotation
-            if (enableSpawnVisualizer)
-            {
-                // Debug prefab
-                debugPrefab.transform.position = spawnPoint;
-                debugPrefab.transform.up = direction;
-            }
-            else
-            {
-                // Warning 
-                GameObject iconWarning = Instantiate(
-                    warningPrefab,   /* Game Object to instantiate */
-                    spawnPoint,         /* Starting position */
-                    Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
-                    gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
-                );
-                iconWarning.transform.up = direction;
-
-                yield return new WaitForSeconds(timeToDisplayWarning);
-                Destroy(iconWarning);
-
-                // Sideswiper
-                GameObject enemyGameObject = Instantiate(
-                    sideswiperPrefab,   /* Game Object to instantiate */
-                    spawnPoint,         /* Starting position */
-                    Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
-                    gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
-                );
-                enemyGameObject.transform.up = direction;
-            }
-
-            yield return new WaitForSeconds(timeBetweenSpawnBase);
+            // Debug prefab
+            debugPrefab.transform.position = spawnPoint;
+            debugPrefab.transform.up = direction;
         }
+        else
+        {
+            // Warning 
+            GameObject iconWarning = Instantiate(
+                warningPrefab,   /* Game Object to instantiate */
+                spawnPoint,         /* Starting position */
+                Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
+                gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+            );
+            iconWarning.transform.up = direction;
+
+            yield return new WaitForSeconds(timeToDisplayWarning);
+            Destroy(iconWarning);
+
+            // Sideswiper
+            GameObject enemyGameObject = Instantiate(
+                sideswiperPrefab,   /* Game Object to instantiate */
+                spawnPoint,         /* Starting position */
+                Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
+                gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+            );
+            enemyGameObject.transform.up = direction;
+        }
+
+        yield return new WaitForSeconds(timeBetweenSpawnBase);
     }
 
     /*
