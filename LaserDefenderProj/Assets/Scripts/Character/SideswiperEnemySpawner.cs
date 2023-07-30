@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using DFramework;
 
 public class SideswiperEnemySpawner : MonoBehaviour
 {
@@ -117,7 +118,7 @@ public class SideswiperEnemySpawner : MonoBehaviour
                     warningPrefab,   /* Game Object to instantiate */
                     spawnPoint,         /* Starting position */
                     Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
-                    transform           /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                    gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
                 );
                 iconWarning.transform.up = direction;
 
@@ -129,7 +130,7 @@ public class SideswiperEnemySpawner : MonoBehaviour
                     sideswiperPrefab,   /* Game Object to instantiate */
                     spawnPoint,         /* Starting position */
                     Quaternion.identity,   /* Make the player's local "up" direction equal to the direction */
-                    transform           /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                    gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
                 );
                 enemyGameObject.transform.up = direction;
             }

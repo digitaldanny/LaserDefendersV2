@@ -34,8 +34,8 @@ public class WaveEnemySpawner : MonoBehaviour
             GameObject enemyGameObject = Instantiate(
                 waveConfig.GetEnemyPrefab(enemyIndex),      /* Game Object to instantiate */
                 waveConfig.GetStartingWaypoint().position,  /* Starting position */
-                Quaternion.Euler(0, 0, 180),                /* Rotation = 180 degrees so enemies point down */
-                transform                                   /* Transform of the parent object to instantiate this game object into (enemySpawner) */
+                Quaternion.Euler(0, 0, 180), /* Rotation = 180 degrees so enemies point down */
+                gameObject.GetComponentInParent<Transform>() /* Transform of the parent object to instantiate this game object into (enemySpawner) */
             );
             enemyGameObject.GetComponent<Pathfinder>().SetWaveConfig(waveConfig);
 

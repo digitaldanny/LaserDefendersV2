@@ -81,6 +81,7 @@ public class Shooter : MonoBehaviour
      * PRIVATE METHODS
      * +-----+-----+-----+-----+-----+
      */
+
     private void Awake()
     {
         audioPlayer = FindFirstObjectByType<AudioPlayer>();
